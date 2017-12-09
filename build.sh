@@ -3,8 +3,8 @@
 
 wget https://github.com/mwolszleger/testbuild/archive/master.zip
 
-unzip testbuild-master.zip
-rm testbuild-master.zip
+unzip master.zip
+rm master.zip
 
 cd testbuild
 
