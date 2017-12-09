@@ -1,0 +1,86 @@
+
+<div ng-controller="ProblemCtrl" ng-init="getProblem()">
+    <div ng-bind-html="errorDataLoaded"></div>
+    <div ng-hide="problemData || errorDataLoaded" class="preloader">
+    </div>
+    
+    <div class="panel panel-default" ng-repeat="x in problemData">
+        <div class="panel-heading row problemHeader">
+            <span class="problemOptions checkbox checkbox-primary checkbox-circle checkbox-lg" data-placement="left" title="{{x.isResolved ? 'Problem oznaczono jako rozwiązany' : 'Kliknij, by oznaczyć problem jako rozwiązany' }}" bs-tooltip style="float:left;">
+                <input id="checkbox-{{x.id}}" class="styled" type="checkbox" ng-model="x.isResolved" ng-change="editEntity(x.id, x.isResolved)">
+                <label for="checkbox-{{x.id}}"></label>
+            </span>
+            <h3 class="problem-title" style="float:left;">
+                Problem #{{problemid}}
+            </h3>
+
+            <div class="pull-right">
+                <div class="problemStatusInfo">
+                    <button class="btn btn-md btn-default neutral-button" ng-click="openRemoveProblemWindow()" data-placement="left" data-original-title="Usuń problem" bs-tooltip>
+                        <i class="fa fa-trash pull-right" aria-hidden="true"></i>
+                    </button>   
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-details">
+
+
+            <div class="row">
+                <div class="col-xs-4 col-md-3 col-lg-2 textToRight">
+                    Lokalizacja:
+                </div>
+                <div class="col-xs-8 col-md-3">
+                     <a ng-if="x.computer" ui-sref="Komputer({id: '{{x.computer.id}}'})" title="Lokalizacja komputera: {{x.computer.laboratory.building + x.computer.laboratory.roomNo}}" bs-tooltip>
+                        <i class="fa fa-desktop"></i> {{x.computer.name}}
+                    </a>
+                    <a ng-if="x.laboratory" ui-sref="Laboratorium({id: '{{x.laboratory.id}}'})"> 
+                        <i class="fa fa-cube"></i> {{x.laboratory.building + x.laboratory.roomNo}}
+                    </a>
+                </div>
+                <div class="col-xs-4 col-md-2 textToRight">
+                    Autor:
+                </div>
+                <div class="col-xs-8 col-md-4 col-lg-5">
+                    {{x.author.firstname}} {{x.author.surname}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-3 col-lg-2 textToRight">
+                    Data zgłoszenia:
+                </div>
+                <div class="col-xs-8 col-md-3">
+                    <time am-time-ago="x.dateNotification" class="badge" title="Zgłoszony: {{ x.dateNotification | amDateFormat: 'dddd, D MMMM YYYY H:mm' }}" bs-tooltip>
+                        {{x.dateNotification | amDateFormat: 'dddd, D MMMM YYYY H:mm '}}
+                    </time>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-3 col-lg-2 textToRight">
+                    Opis problemu:
+                </div>
+                <div class="col-xs-8 col-md-9">
+                     {{x.content}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8"></div>
+            </div>
+
+        </div>
+    </div>
+    <div id="task-list" ng-controller="TaskCtrl" ng-show="problemData" class="panel panel-default">
+        <div class="panel-heading">
+            <h4>
+                Zadania
+                <button class="btn btn-success btn-sm pull-right" title="Nowe zadanie" ng-click="openNewTaskWindow()">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Dodaj nowe zadanie
+                </button>
+            </h4>
+        </div>
+
+
+        <div ng-include="'app/components/Task/TasksListPartialView.html'"></div>
+    </div>
+</div>
